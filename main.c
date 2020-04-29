@@ -1,7 +1,9 @@
 #include "process.h"
 
 int process_cmp(const void *a, const void *b){
-	return ((Process*)a)->start_time - ((Process*)b)->start_time;
+	Process *c = (Process*)a;
+	Process *d = (Process*)b;
+	return c->start_time - d->start_time;
 }
 
 void process_scheduling(Process **processList, int processNum, int schedulingType);
@@ -36,9 +38,22 @@ int main() {
 		processList[i]->pid = -1;
 	}
 	
-	qsort(processList, processNum, sizeof(Process*), process_cmp);
+	//qsort(processList, processNum, sizeof(Process*), process_cmp);
 
-
+	
+	for (int i = 0; i < processNum; i++)
+		for (int j = i + 1; j < processNum; j++)
+			if (processList[i]->start_time > processList[j]->start_time) {
+				Process *tmp = processList[i];
+				processList[i] = processList[j];
+				processList[j] = tmp;
+			}
+			else if (processList[i]->start_time == processList[j]->start_time && processList[i]->runtime > processList[j]->runtime) {
+				Process *tmp = processList[i];
+				processList[i] = processList[j];
+				processList[j] = tmp;
+			}
+	
 	process_scheduling(processList, processNum, sched_type);
 	
 	for (int i = 0; i < processNum; i++)
