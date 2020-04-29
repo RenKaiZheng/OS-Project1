@@ -11,7 +11,7 @@ int start_process(Process **processList, int processNum, int sched_timer, int re
 			break;
 		else if (processList[readyNum]->pid == -1) {
 			processList[readyNum]->pid = run_process(processList[readyNum]);
-			printf("%s %u\n", processList[readyNum]->name, processList[readyNum]->pid);
+		//	printf("%s %u\n", processList[readyNum]->name, processList[readyNum]->pid);
 			wait_process(processList[readyNum]->pid);
 		}
 	}
@@ -122,5 +122,8 @@ void process_scheduling(Process** processList, int processNum, int sched_type){
 		}
 
 		sched_timer++;
+		
+		//if (sched_timer % 1000 == 0)
+		//	printf("%d\n", sched_timer);
 	}
 }

@@ -24,4 +24,3 @@ typedef struct Process {
     int runtime;
     pid_t pid;
 }Process;
-

@@ -40,5 +40,9 @@ int main() {
 
 
 	process_scheduling(processList, processNum, sched_type);
+	
+	for (int i = 0; i < processNum; i++)
+		printf("%s %d\n", processList[i]->name, processList[i]->pid);
+
 	return 0;
 }
