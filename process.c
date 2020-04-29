@@ -1,14 +1,6 @@
 #define _GNU_SOURCE
 #include "process.h"
 
-#include <sched.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/syscall.h>
-
-
 int SetCpuAffinity(pid_t pid, int core_number) {
 	int cpu_num = sizeof(cpu_set_t);
 	if(core_number > cpu_num){
@@ -28,7 +20,7 @@ int run_process(Process *pcb){
 	pid_t pid = fork();
 	if(pid < 0){
 		fprintf(stderr, "fork error!\n");
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	else if (pid > 0) {
 		SetCpuAffinity(pid, 1);

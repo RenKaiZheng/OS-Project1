@@ -1,9 +1,9 @@
 #include "process.h"
 
 int SetCpuAffinity(pid_t pid, int core_number);
-int run_process(Process *pcb);
 int wait_process(pid_t pid);
 int wake_process(pid_t pid);
+int run_process(Process *pcb);
 
 int start_process(Process **processList, int processNum, int sched_timer, int readyNum){
 	for (; readyNum < processNum; readyNum++) {
@@ -82,10 +82,11 @@ void process_scheduling(Process** processList, int processNum, int sched_type){
 	while(doneNum < processNum){
 		if(ptrNow != -1 && processList[ptrNow]->runtime <= 0){
 			waitpid(processList[ptrNow]->pid, NULL, 0);
-			ptrNow = -1;
 			doneNum++;
+			ptrNow = -1;
+			
 
-			if(doneNum >= processNum)
+			if(doneNum == processNum)
 				return;
 		}
 		
@@ -105,12 +106,12 @@ void process_scheduling(Process** processList, int processNum, int sched_type){
 		else
 			RR_timer = 0;
 
-		if (ptrNext != -1 && ptrNow != ptrNext && ptrNow != -1) {
+		if (ptrNext != ptrNow && ptrNext != -1 && ptrNow != -1) {
 			wake_process(processList[ptrNext]->pid);
 			wait_process(processList[ptrNow]->pid);
 			ptrNow = ptrNext;	
 		}
-		else if(ptrNow == -1 && ptrNext != -1) {
+		else if(ptrNext != -1 && ptrNow == -1) {
 			wake_process(processList[ptrNext]->pid);
 			ptrNow = ptrNext;
 		}
