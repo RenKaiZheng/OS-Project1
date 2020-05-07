@@ -48,23 +48,6 @@ int Next_SJF(Process **processList, int processNum, int ptrNow) {
 		return Next_PSJF(processList, processNum, ptrNow);
 }
 
-int Next_RR(Process **processList, int processNum, int ptrNow, int RR_timer) {
-	if (ptrNow == -1) {
-		for (int i = 0; i < processNum; i++)
-			if (processList[i]->runtime > 0)
-				return i;
-		return -1;
-	}
-	else if (RR_timer < 500)
-		return ptrNow;
-	else {
-		for (int i = (ptrNow+1)%processNum; i != ptrNow; i = (i+1)%processNum)
-			if (processList[i]->pid != -1 && processList[i]->runtime > 0)
-				return i;
-		return (processList[ptrNow]->runtime > 0)?ptrNow:-1;
-	}
-}
-
 ////////////////////
 
 void process_scheduling(Process** processList, int processNum, int sched_type){
@@ -98,8 +81,7 @@ void process_scheduling(Process** processList, int processNum, int sched_type){
 			ptrNext = Next_SJF(processList, readyNum, ptrNow);
 		else if (sched_type == 3)
 			ptrNext = Next_PSJF(processList, readyNum, ptrNow);
-		else if (sched_type == 4)
-			ptrNext = Next_RR(processList, readyNum, ptrNow, RR_timer);
+
 
 		if (ptrNext == ptrNow && ptrNow != -1)
 			RR_timer += 1;
@@ -124,7 +106,5 @@ void process_scheduling(Process** processList, int processNum, int sched_type){
 
 		sched_timer++;
 		
-		//if (sched_timer % 1000 == 0)
-		//	printf("%d\n", sched_timer);
 	}
 }

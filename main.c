@@ -7,6 +7,7 @@ int process_cmp(const void *a, const void *b){
 }
 
 void process_scheduling(Process **processList, int processNum, int schedulingType);
+void RR_scheduling(Process **processList, int processNum);
 
 int main() {
 
@@ -37,8 +38,6 @@ int main() {
 		scanf("%s%d%d", processList[i]->name, &(processList[i]->start_time), &(processList[i]->runtime));
 		processList[i]->pid = -1;
 	}
-	
-	//qsort(processList, processNum, sizeof(Process*), process_cmp);
 
 	
 	for (int i = 0; i < processNum; i++)
@@ -54,7 +53,10 @@ int main() {
 				processList[j] = tmp;
 			}
 	
-	process_scheduling(processList, processNum, sched_type);
+	if (sched_type != 4)
+		process_scheduling(processList, processNum, sched_type);
+	else
+		RR_scheduling(processList, processNum);
 	
 	for (int i = 0; i < processNum; i++)
 		printf("%s %d\n", processList[i]->name, processList[i]->pid);

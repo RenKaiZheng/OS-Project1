@@ -24,3 +24,9 @@ typedef struct Process {
     int runtime;
     pid_t pid;
 }Process;
+
+struct RR_list {
+    int process;
+    struct RR_list *next;
+};
+typedef struct RR_list RR_list;
